@@ -26,13 +26,15 @@ module Nbinvitational
       generate.system_tests false
     end
     config.middleware.insert_before 0, Rack::Cors do
+
       allow do
         origins '*'
         resource '*',
-                 headers: :any,
-                 methods: %w[:get :post :put :delete :options],
-                 expose: %w[access-token expiry token-type uid client],
+                 headers: %w(Content-Type Accept),
+                 methods: %w(:get :post :put :delete :options :head),
+                 expose: %w(access-token expiry token-type uid client),
                  max_age: 0
+
       end
     end
     routes.default_url_options[:host] = 'https://votingapi.herokuapp.com'

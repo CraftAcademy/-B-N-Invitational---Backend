@@ -6,7 +6,7 @@ RSpec.describe Api::V1::AthletesController, type: :request do
     let(:object) { document['status'] }
 
     it 'should return sucess message if updated' do
-      put "/api/v1/athletes/#{athlete.id}", params: {
+      post "/api/v1/athletes/voting/#{athlete.id}", params: {
         vote: 10.0
        }
 
@@ -14,7 +14,7 @@ RSpec.describe Api::V1::AthletesController, type: :request do
     end
 
     it 'should update an athletes score' do
-      put "/api/v1/athletes/#{athlete.id}", params: {
+      post "/api/v1/athletes/voting/#{athlete.id}", params: {
         vote: 10.0
       }
 

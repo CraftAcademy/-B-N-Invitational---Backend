@@ -12,10 +12,6 @@ class Api::V1::AthletesController < ApiController
     render json: @athlete, serializer: Athlete::ShowSerializer, status: :ok
   end
 
-  def update
-    render_message('Thank you for casting your vote!') if @result.updated_votes(params)
-  end
-
   def edit
     render_message('Athlete updated successfully!')  if @athlete.update(athlete_params)
   end
@@ -34,6 +30,10 @@ class Api::V1::AthletesController < ApiController
     athlete = Athlete.find_by(id: params[:id])
     athlete.destroy
     render_message('Athlete successfully deleted!')
+  end
+
+  def voting
+    render_message('Thank you for casting your vote!') if @result.updated_votes(params)
   end
 
   private
