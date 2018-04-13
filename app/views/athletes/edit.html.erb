@@ -1,17 +1,31 @@
+<div class="form">
 <h1>Edit Athlete</h1>
 
 <%= form_with model: @athlete, local: true do |form| %>
-  <%= form.label :name %>
-  <%= form.text_field :name, value: @athlete.name %>
-  <%= form.label :home %>
-  <%= form.text_field :home, value: @athlete.home %>
-  <%= form.label :age %>
-  <%= form.text_field :age %>
-  <%= form.label :starttime %>
-  <%= form.text_field :starttime%>
-  <% if @athlete.image.attachment %>
-    <%= image_tag @athlete.image, width: '250' %>
+  <p>
+    <%= form.label :name %>
+    <br>
+    <%= form.text_field :name, value: @athlete.name %>
+  </p>
+  <p>
+    <%= form.label :home %>
+    <br>
+    <%= form.text_field :home, value: @athlete.home %>
+  </p>
+  <p>
+    <%= form.label :age %>
+    <br>
+    <%= form.text_field :age %>
+  </p>
+  <p>
+    <%= form.label :starttime %>
+    <br>
+    <%= form.text_field :starttime%>
+  </p>
+    <% if @athlete.image.attachment %>
+      <%= image_tag @athlete.image, width: '250' %>
+    <% end %>
+    <%= form.file_field :image %>
+    <%= form.submit value: 'Update Athlete' %>
   <% end %>
-  <%= form.file_field :image %>
-  <%= form.submit value: 'Update Athlete' %>
-<% end %>
+</div>

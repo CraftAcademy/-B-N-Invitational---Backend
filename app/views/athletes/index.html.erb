@@ -1,67 +1,79 @@
-<% if current_user %>
-  <%= form_with url: destroy_user_session_path, method: :delete, local: true do |form| %>
-    <%= form.submit value: 'Logout' %>
+<%= stylesheet_link_tag "application", :media => "all" %>
+<%= javascript_include_tag "application" %>
+
+<div class="athlete">
+
+  <h3 id="athletes_section">Athletes</h3>
+
+  <%= link_to '<button type="button" class="btn btn-info">New Athlete</button>'.html_safe, new_athlete_path %>
+
+  <p></p>
+  <% if @sorted_athletes %>
+
+    <% @sorted_athletes.each do |athlete| %>
+      <h5><%= athlete.name%></h5>
+
+      <%= form_with url: toggle_voting_path(athlete), method: :put, local: true do |form| %>
+      <%= form.submit value: 'Open/Close Voting', id: 'voting' %>
+    <% end %>
+
+    <p>Status:<strong><%= athlete.votingOpen %></strong></p>
+      <%= link_to '<button type="button" class="btn btn-success">Edit Athlete</button>'.html_safe, edit_athlete_path(athlete) %>
+      <%= form_with url: athlete_path(athlete), method: :delete, local: true do |form| %>
+      <button type="submit" class="btn btn-danger">Delete</button>
+    <p></p>
+    <% end %>
   <% end %>
 <% end %>
+</div>
 
-<h1>Athletes</h1>
+<div class="results">
+  <h3 id="results">Results</h3>
+    <%= form_with url: publish_path, method: :put, local: true do |form| %>
+    <%= form.submit value: 'Publish Result' %>
+  <% end %>
+  <p></p>
+    <%= form_with url: revert_results_path, method: :put, local: true do |form| %>
+    <%= form.submit value: 'Revert Result' %>
+  <% end %>
+  <p></p>
 
-<% if @sorted_athletes %>
-  <ul id="athlete">
-    <% @sorted_athletes.each do |athlete| %>
-      <li>
-        <p><%= athlete.name%></p>
-
-        <%= form_with url: toggle_voting_path(athlete), method: :put, local: true do |form| %>
-          <%= form.submit value: 'Open/Close Voting', id: 'voting' %>
-        <% end %>
-        <p>Status: <%= athlete.votingOpen %></p>
-        <%= link_to 'Edit', edit_athlete_path(athlete)  %>
-
-        <%= form_with url: athlete_path(athlete), method: :delete, local: true do |form| %>
-          <%= form.submit value: 'Delete' %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-
-<%= link_to 'Create Athlete', new_athlete_path %>
-
-<%= form_with url: publish_path, method: :put, local: true do |form| %>
-  <%= form.submit value: 'Publish Result' %>
-<% end %>
-<%= form_with url: revert_results_path, method: :put, local: true do |form| %>
-  <%= form.submit value: 'Revert Result' %>
-<% end %>
-
-<h3>Results</h3>
-
-<% if @sorted_results %>
+  <h3>Result List</h3>
+  <% if @sorted_results %>
   <% position = 1 %>
   <% @sorted_results.each do |result| %>
     <% if result.valid_score == true %>
-      <p>
-      No. <%= position %>
+      <h5>
+        No.
+        <%= position %></>
       <%= result.athlete.name %>
-      Score: <%= result.score %>,
-      Number of votes: <%= result.number_of_votes %>
-      </p>
+    </h5>
+    <p>
+      Score:
+      <strong><%= result.score %>,</strong>
+      Number of votes:
+      <strong><%= result.number_of_votes %></strong>
       <% position += 1 %>
+      </p>
     <% end %>
   <% end %>
-<% end %>
+  <% end %>
 
-<h3>Insufficient votes</h3>
+  <h3 id="insufficient_votes">Insufficient votes</h3>
 
-<% if @sorted_results %>
+  <% if @sorted_results %>
   <% @sorted_results.each do |result| %>
     <% if result.valid_score == false %>
-      <p>
-      <%= result.athlete.name %>
-      Score: <%= result.score %>,
-       Number of votes: <%= result.number_of_votes %>
-      </p>
+        <h5>
+          <%= result.athlete.name %>
+        </h5>
+        <p>
+          Score:
+          <strong><%= result.score %>,</strong>
+          Number of votes:
+          <strong><%= result.number_of_votes %></strong>
+        <p/>
+      <% end %>
     <% end %>
   <% end %>
-<% end %>
+</div>
